@@ -89,6 +89,46 @@ class AddressBookInfo {
             }
         }
     }
+
+    // Method to find a contact by first and last name
+    public Contact findContact(String firstName, String lastName) {
+        for (Contact contact : contacts) {
+            if (contact.getFirstName().equalsIgnoreCase(firstName) && contact.getLastName().equalsIgnoreCase(lastName)) {
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    // Method to edit an existing contact's details
+    public boolean editContact(String firstName, String lastName, Scanner scanner) {
+        Contact contact = findContact(firstName, lastName);
+        if (contact != null) {
+            System.out.print("Enter new Address: ");
+            contact.setAddress(scanner.nextLine());
+
+            System.out.print("Enter new City: ");
+            contact.setCity(scanner.nextLine());
+
+            System.out.print("Enter new State: ");
+            contact.setState(scanner.nextLine());
+
+            System.out.print("Enter new Zip Code: ");
+            contact.setZip(scanner.nextLine());
+
+            System.out.print("Enter new Phone Number: ");
+            contact.setPhoneNumber(scanner.nextLine());
+
+            System.out.print("Enter new Email: ");
+            contact.setEmail(scanner.nextLine());
+
+            System.out.println("Contact updated successfully!\n");
+            return true;
+        } else {
+            System.out.println("Contact not found.");
+            return false;
+        }
+    }
 }
 
 
@@ -132,12 +172,28 @@ public class AddressBook {
             System.out.println("Contact added successfully!\n");
         }
 
+    // Method to edit an existing contact's details by name
+    private static void editContact() {
+        System.out.print("Enter First Name of the contact to edit: ");
+        String firstName = scanner.nextLine();
+
+        System.out.print("Enter Last Name of the contact to edit: ");
+        String lastName = scanner.nextLine();
+
+        // Attempt to edit the contact details
+        boolean success = addressBook.editContact(firstName, lastName, scanner);
+        if (!success) {
+            System.out.println("Could not find the specified contact.\n");
+        }
+    }
+
         public static void main (String[]args){
             while (true) {
                 System.out.println("Address Book Menu:");
                 System.out.println("1. Add New Contact");
-                System.out.println("2. Display All Contacts");
-                System.out.println("3. Exit");
+                System.out.println("2. Edit Contact");
+                System.out.println("3. Display All Contacts");
+                System.out.println("4. Exit");
                 System.out.print("Choose an option: ");
 
                 int choice = scanner.nextInt();
@@ -149,10 +205,14 @@ public class AddressBook {
                         break;
 
                     case 2:
-                        addressBook.displayContacts();
+                        editContact();
                         break;
 
                     case 3:
+                        addressBook.displayContacts();
+                        break;
+
+                    case 4:
                         System.out.println("Exiting Address Book. Goodbye!");
                         System.exit(0);
                         break;
